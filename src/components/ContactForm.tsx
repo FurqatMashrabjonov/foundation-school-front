@@ -75,7 +75,7 @@ const ContactForm: React.FC = () => {
 
   const sendToBackend = async (name: string, phone: string, type: string) => {
     try {
-      await fetch('http://foundation-school.test/api/application', {
+      await fetch('https://admin.foundation-school.uz/api/application', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
