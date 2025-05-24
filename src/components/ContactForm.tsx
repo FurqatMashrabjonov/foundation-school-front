@@ -72,6 +72,29 @@ const ContactForm: React.FC = () => {
       }));
     }
   };
+  const sendToTelegram = async (name: string, phone: string, type: string) => {
+    const token = "7554903976:AAG0X_iHH2awFyRjtytbZ1wp25qDKqF_Euw";
+    const chatId = "-1002537470117";
+
+    const message = `
+📥 *Yangi ro'yxatdan o'tish!*
+👤 Ism: *${name}*
+📞 Telefon: *${phone}*
+📘 Kurs turi: *${type}*
+`.trim();
+
+    const url = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}&parse_mode=Markdown`;
+
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error('Telegram API error');
+      }
+    } catch (error) {
+      console.error("Telegram error:", error);
+      throw error;
+    }
+  };
 
   const sendToBackend = async (name: string, phone: string, type: string) => {
     try {
@@ -100,6 +123,7 @@ const ContactForm: React.FC = () => {
 
       try {
         await sendToBackend(formData.name, formData.phone, formData.type);
+        await sendToTelegram(formData.name, formData.phone, formData.type)
 
         setIsSubmitting(false);
         setIsSuccess(true);
