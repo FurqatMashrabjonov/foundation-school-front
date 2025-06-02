@@ -42,8 +42,11 @@ const ContactForm: React.FC = () => {
 
     if (!formData.phone.trim()) {
       newErrors.phone = 'Telefon raqam kiritish majburiy';
-    } else if (!/^\+?\d{10,15}$/.test(formData.phone.replace(/\s/g, ''))) {
-      newErrors.phone = 'Yaroqli telefon raqamini kiriting';
+    } else {
+      const cleanedPhone = formData.phone.replace(/[^\d]/g, ''); // digits only
+      if (cleanedPhone.length !== 9) {
+        newErrors.phone = 'Yaroqli telefon raqamini kiriting';
+      }
     }
 
     if (!formData.type) {
@@ -190,6 +193,7 @@ const ContactForm: React.FC = () => {
                   onChange={handleChange}
                   required
                   error={errors.phone}
+                  mask="(99) 999-99-99"
               />
 
               <SelectField
